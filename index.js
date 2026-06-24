@@ -33,14 +33,15 @@ app.get('/', (req, res) => {
 		data = data.replace('{{classes}}', options);
 		data = data.replace('{{navbar}}', getNavbar(true));
 		data = data.replace('{{headboilerplate}}', headboilerplate)
+		data = data.replace(/{{basePath}}/g, '');
 		data = data.replace('{{medianGraph}}', `graph("overallgraph", [${countsMap.map(x => x[1]).join(',')}], ${JSON.stringify(labelText)}, ${JSON.stringify({ x: 'Number of Classes', y: 'Class Grade Point Median' })})`);
-		data = data.replace('{{hardestClass}}', `
-			$('#hardestclasstitle').html("Hardest Class: <a href='/Survey%20of%20Organic%20Chemistry'>Survey of Organic Chemistry</a>")
-			graph('hardestclassgraph', [${classes.find(c => c.name == 'Survey of Organic Chemistry').counts.map(x => x[1]).join(',')}], ${JSON.stringify(labelText)}, ${JSON.stringify({ x: 'Number of Students', y: 'Student Grade' })})
-		`);
-		data = data.replace('{{easiestClass}}', `
-			$('#easiestclasstitle').html("Easiest Class: <a href='/String%20Orchestra'>String Orchestra</a>")
-			graph("easiestclassgraph", [${classes.find(c => c.name == 'String Orchestra').counts.map(x => x[1]).join(',')}], ${JSON.stringify(labelText)}, ${JSON.stringify({ x: 'Number of Students', y: 'Student Grade' })})`)
+			data = data.replace('{{hardestClass}}', `
+				$('#hardestclasstitle').html("Hardest Class: <a href='/class/Survey%20of%20Organic%20Chemistry/'>Survey of Organic Chemistry</a>")
+				graph('hardestclassgraph', [${classes.find(c => c.name == 'Survey of Organic Chemistry').counts.map(x => x[1]).join(',')}], ${JSON.stringify(labelText)}, ${JSON.stringify({ x: 'Number of Students', y: 'Student Grade' })})
+			`);
+			data = data.replace('{{easiestClass}}', `
+				$('#easiestclasstitle').html("Easiest Class: <a href='/class/String%20Orchestra/'>String Orchestra</a>")
+				graph("easiestclassgraph", [${classes.find(c => c.name == 'String Orchestra').counts.map(x => x[1]).join(',')}], ${JSON.stringify(labelText)}, ${JSON.stringify({ x: 'Number of Students', y: 'Student Grade' })})`)
 		res.status(200).send(data);
 	})
 })
@@ -63,6 +64,7 @@ app.get('/about', (req, res) => {
 	var data = fs.readFileSync(path.join(__dirname, '/public/about.html'), 'utf8');
 	data = data.replace('{{headboilerplate}}', headboilerplate);
 	data = data.replace('{{navbar}}', getNavbar(true));
+	data = data.replace(/{{basePath}}/g, '');
 
 	res.status(200).send(data);
 })
@@ -72,6 +74,7 @@ app.get("/class/*", (req, res) => {
 
 	var data = fs.readFileSync(path.join(__dirname, "/public/class.html"), 'utf8');
 	data = data.replace('{{headboilerplate}}', headboilerplate);
+	data = data.replace(/{{basePath}}/g, '');
 	let substr = req.url.replace("/class/", "").split('+').join('%20')
 	let currentClass = decodeURI(substr);
 
@@ -84,7 +87,8 @@ app.get("/class/*", (req, res) => {
 		var results = classData
 		if (results.error) {
 			if (!recentData.exists) {
-				res.status(404).sendFile(path.join(__dirname, "/public/404.html"));
+				let notFound = fs.readFileSync(path.join(__dirname, "/public/404.html"), 'utf8').replace(/{{basePath}}/g, '');
+				res.status(404).send(notFound);
 				return;
 			}
 			results = {
@@ -319,7 +323,7 @@ function getNavbar(showsearch) {
 	if (!showsearch) {
 		navbartext = navbartext.replace('{{searchdisplay}}', 'nodisplay');
 	}
-	return navbartext.replace('{{classes}}', (!showsearch) ? '' : classNames.map((c) => {
+	return navbartext.replace(/{{basePath}}/g, '').replace('{{classes}}', (!showsearch) ? '' : classNames.map((c) => {
 		return (c.startsWith('#') ? null : `<option description="something" value='/${c.split(' ').join('+')}'>${c}</option>`)
 	}).join(''));
 }
@@ -517,9 +521,21 @@ function getGpa(students) {
 }
 
 const headboilerplate = `
+<meta charset="utf-8">
+<script>
+	(function () {
+		try {
+			var theme = localStorage.getItem('imsa-grades-theme');
+			if (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
+			document.documentElement.setAttribute('data-theme', theme || 'light');
+		} catch (err) {
+			document.documentElement.setAttribute('data-theme', 'light');
+		}
+	})();
+</script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-	<link rel="icon" href="/assets/icon.png" </link>
+	<link rel="icon" href="/assets/icon.png">
 	<link rel="stylesheet" type="text/css"
 		href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/css/selectize.default.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -529,6 +545,7 @@ const headboilerplate = `
 	<link rel="stylesheet"
 		href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+	<script src="/theme.js"></script>
 	<meta property="og:url" content="https://imsagrades.com" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta property="og:image" content="/assets/preview.png" />

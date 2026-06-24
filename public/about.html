@@ -4,9 +4,9 @@
 <head>
     {{headboilerplate}}
     <title>About - IMSA Grades</title>
-    <link rel="stylesheet" type="text/css" href="/style.css">
+    <link rel="stylesheet" type="text/css" href="{{basePath}}/style.css">
     <style>
-        a {
+        .resource-links a {
             display: block;
         }
     </style>
@@ -22,34 +22,39 @@
         });
     </script>
     <nav class="navbar navbar-dark bg-dark">
-        <!-- <span class="navbar-brand mb-0 h1"><a style="color:white;text-decoration:none;" href="/">IMSA Grades</a></span> -->
         {{navbar}}
     </nav>
     <div id='main'>
         <div id='intro' class='container'>
             <h1>About</h1>
             <p>
-                <!-- Made by Patrick Hultquist and <span title="although, let's be honest here, he was more of a 'contributor' <3 <3">Archan Das</span> -->
                 This site was made for students, parents, teachers and all other community members to have clean and
-                    consistent access to grades at the Illinois Mathematics and Science Academy. 2012-2017 Data was aquired
-                    through a 2017 FOIA Request by a Class of 2018 student. Data from 2016-2022 was gathered from the Office of Institutional Research, but only 2018-2022 data was used.<br><br><i>Note this is not an official site. If you find an error, please report it.</i>
-                <br><br>
-                <a href='mailto:phultquist@imsa.edu'>Contact</a>
+                    consistent access to grades at the Illinois Mathematics and Science Academy. 2012-2017 data was acquired
+                    through a 2017 FOIA request by a Class of 2018 student. Aggregate data from 2018-2021 came from the Office of Institutional Research. The FY22-FY25 grade distributions come from a later FOIA. The site is currently maintained by Cinna Davis.<br><br><i>Note this is not an official site. If you find an error, please report it.</i>
+            </p>
+            <div class="resource-links">
+                <a href='mailto:cdavis@imsa.edu'>Contact Cinna Davis</a>
                 <a href='https://sites.imsa.edu/acronym/2017/12/15/get-schooled-gender-disparities-in-imsa-academics/'>Get Schooled: Gender Disparities In IMSA Academics</a>
-                <a href='/grades'>Download Raw Data [2012-2016]</a>
-                <a href='/grades-new'>Download New Data [2016-2022]</a>
+                <a href='{{basePath}}/grades.csv'>Download Student-Level Data [2012-2017]</a>
+                <a href='{{basePath}}/grades-recent.csv'>Download Aggregate Data [2016-2022 source]</a>
+                <a href='{{basePath}}/data/grade-distributions-fy22-fy25.csv'>Download FY22-FY25 Grade Distribution Data</a>
                 <a
                     href='https://www.imsa.edu/wp-content/uploads/2021/02/Course-Catalog-LO-22-23vFINAL2_2022Feb.pdf'>IMSA
                     Class List</a>
-            </p>
+            </div>
             <h3>Notes</h3>
             <ul>
-                <li>Female and Male were the only genders provided in the <a class='inline' href='/grades'>dataset</a></li>
-                <li>The site is entirely <a class='inline' href='https://github.com/phultquist/imsa-grades/'><b>open source</b></a></li>
-                <li> Something wrong? <a class='inline' href='https://github.com/phultquist/imsa-grades/issues/new'>Report an Error</a></li>
+                <li>Female and Male were the only genders provided in the <a class='inline' href='{{basePath}}/grades.csv'>dataset</a></li>
+                <li>The site is entirely <a class='inline' href='https://github.com/epochml/imsa-grades/'><b>open source</b></a></li>
+                <li> Something wrong? <a class='inline' href='https://github.com/epochml/imsa-grades/issues/new'>Report an Error</a></li>
             </ul>
-            <iframe src="https://ghbtns.com/github-btn.html?user=phultquist&repo=imsa-grades&type=fork&count=true&size=large&v=2&count=none" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
+            <iframe src="https://ghbtns.com/github-btn.html?user=epochml&repo=imsa-grades&type=fork&count=true&size=large&v=2&count=none" frameborder="0" scrolling="0" width="170" height="30" title="GitHub"></iframe>
         </div>
+    </div>
+    <div class="footer">
+        <span>© IMSA Grades <script>document.write(new Date().getFullYear())</script></span>
+        <a href="{{basePath}}/">Home</a>
+        <a href="mailto:cdavis@imsa.edu">Contact</a>
     </div>
 </body>
 

@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 <head>
 	{{headboilerplate}}
-	<link rel="stylesheet" type="text/css" href="/style.css">
+	<link rel="stylesheet" type="text/css" href="{{basePath}}/style.css">
 	<title>
 		IMSA Grades
 	</title>
@@ -29,24 +29,18 @@
 			</h2>
 			<p>
 				Use this tool to find out more about courses across campus. Search across
-				courses, and look below to find overview statistics about many classes. <i>Note this is not an official site. If you find an error, please report it to Rohan Jain (<a href = "mailto:rjain@imsa.edu">rjain@imsa.edu</a>).</i>
+				courses, and look below to find overview statistics about many classes. <i>Note this is not an official site. If you find an error, please report it to Cinna Davis (<a href = "mailto:cdavis@imsa.edu">cdavis@imsa.edu</a>).</i>
 			</p>
 
 			<p>
-				This site was made for students, parents, teachers and all other community members to have clean and consistent access to grades at the Illinois Mathematics and Science Academy. 2012-2017 Data was aquired through a 2017 FOIA Request by a Class of 2018 student. Data from 2016-2022 was gathered from the Office of Institutional Research, but only 2018-2022 data was used.
+				This site was made for students, parents, teachers and all other community members to have clean and consistent access to grades at the Illinois Mathematics and Science Academy. 2012-2017 data was acquired through a 2017 FOIA request by a Class of 2018 student. Aggregate data from 2018-2021 came from the Office of Institutional Research, and FY22-FY25 grade distributions came from a later FOIA.
 			</p>
-			<div id="advantages" class="container">
-				<!-- <p><a class="call" href="/grades">Download Raw Data:</a> Raw Data is in CSV format</p> -->
-				<!-- <p><a class="call" href="/about">About Page:</a> How it started, where it's going, etc.</p>
-				<p><a class="call" href="/privacy">Privacy Policy:</a> The privacy policy includes important information</p> -->
-			</div>
 			<h3 style='cursor: pointer;margin-bottom:20px'><a href="javascript:sel[0].selectize.focus();">Search By Class</a></h3>
 		</div>
 	</div>
 	<div class='fit'>
 		<h3>
 			Highlights
-			<!-- <a href='#more'>fasf</a> -->
 		</h3>
 	</div>
 	<div class='extragraphdiv white'>
@@ -64,10 +58,10 @@
 		<p>Determined by the mean grade point for all students in the class.</p>
 		<canvas id='easiestclassgraph'></canvas>
 	</div>
-	<div class='fit' name="more" id="more" style='margin-bottom: 30px'>
-		<h6>
-			@<script>document.write(/\d{4}/.exec(Date())[0])</script> |<a href='/about'> About</a>
-		</h6>
+	<div class="footer">
+		<span>© IMSA Grades <script>document.write(new Date().getFullYear())</script></span>
+		<a href="{{basePath}}/about/">About</a>
+		<a href="mailto:cdavis@imsa.edu">Contact</a>
 	</div>
 	<script>
 		function graph(id, data, labels, titles) {
@@ -75,7 +69,6 @@
 			var myChart = new Chart(ctx, {
 				type: 'bar',
 				data: {
-					// labels: {{labels}},
 					labels: labels,
 					datasets: [{
 						label: 'Count',

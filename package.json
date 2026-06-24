@@ -2,6 +2,10 @@
   "name": "imsa-grades",
   "description": "",
   "scripts": {
+    "import:data": "node scripts/import-fy-data.js",
+    "build": "node scripts/build-static.js",
+    "validate:static": "node scripts/validate-static.js",
+    "serve:static": "python3 -m http.server 8080 --directory docs",
     "start": "node index"
   },
   "engines": {
@@ -11,8 +15,8 @@
     "csv-reader": "^1.0.6",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "xlsx": "^0.18.5"
   },
-  "devDependencies": {},
   "private": true
 }
